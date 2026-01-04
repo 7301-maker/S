@@ -1,0 +1,43 @@
+3. Write a program to compute the depth of a tournament bracket structure in a sports event.
+
+
+#include <iostream>
+using namespace std;
+
+struct Match {
+    Match* left;
+    Match* right;
+};
+
+Match* createMatch() {
+    Match* node = new Match();
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+int depth(Match* root) {
+    if (root == NULL)
+        return 0;
+
+    int leftDepth = depth(root->left);
+    int rightDepth = depth(root->right);
+
+    return (leftDepth > rightDepth ? leftDepth : rightDepth) + 1;
+}
+
+int main() {
+    Match* finalMatch = createMatch();
+    finalMatch->left = createMatch();
+    finalMatch->right = createMatch();
+
+    finalMatch->left->left = createMatch();
+    finalMatch->left->right = createMatch();
+    finalMatch->right->left = createMatch();
+    finalMatch->right->right = createMatch();
+
+    cout << "Depth of Tournament Bracket: " << depth(finalMatch);
+
+    return 0;
+}
+

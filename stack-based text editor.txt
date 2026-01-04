@@ -1,0 +1,58 @@
+1. Implement a stack-based text editor feature that supports undo/redo operations.
+
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main() {
+    stack<string> undoStack;
+    stack<string> redoStack;
+    string text = "";
+    int choice;
+
+    do {
+        cout << "\nCurrent Text: \"" << text << "\"\n";
+        cout << "1. Add Text\n";
+        cout << "2. Undo\n";
+        cout << "3. Redo\n";
+        cout << "4. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            string newText;
+            cout << "Enter text to add: ";
+            cin >> newText;
+
+            undoStack.push(text);   // save current state
+            text += newText;        // update text
+
+            while (!redoStack.empty())
+                redoStack.pop();    // clear redo stack
+        }
+
+        else if (choice == 2) {  // Undo
+            if (!undoStack.empty()) {
+                redoStack.push(text);
+                text = undoStack.top();
+                undoStack.pop();
+            } else {
+                cout << "Nothing to undo!\n";
+            }
+        }
+
+        else if (choice == 3) {  // Redo
+            if (!redoStack.empty()) {
+                undoStack.push(text);
+                text = redoStack.top();
+                redoStack.pop();
+            } else {
+                cout << "Nothing to redo!\n";
+            }
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}

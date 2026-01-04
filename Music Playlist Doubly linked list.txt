@@ -1,0 +1,72 @@
+4. Implement a music playlist where songs can be played forward and backward using a doubly linked list.
+
+
+#include <iostream>
+using namespace std;
+
+// Doubly Linked List Node
+struct Song {
+    string name;
+    Song* prev;
+    Song* next;
+};
+
+Song* head = NULL;
+Song* tail = NULL;
+
+// Add song to playlist (at end)
+void addSong(string songName) {
+    Song* newSong = new Song();
+    newSong->name = songName;
+    newSong->next = NULL;
+    newSong->prev = NULL;
+
+    if (head == NULL) {
+        head = tail = newSong;
+    } else {
+        tail->next = newSong;
+        newSong->prev = tail;
+        tail = newSong;
+    }
+}
+
+// Play songs forward
+void playForward() {
+    Song* temp = head;
+    cout << "\nPlaying Playlist Forward:\n";
+    while (temp != NULL) {
+        cout << temp->name << " -> ";
+        temp = temp->next;
+    }
+    cout << "END\n";
+}
+
+// Play songs backward
+void playBackward() {
+    Song* temp = tail;
+    cout << "\nPlaying Playlist Backward:\n";
+    while (temp != NULL) {
+        cout << temp->name << " -> ";
+        temp = temp->prev;
+    }
+    cout << "START\n";
+}
+
+int main() {
+    int n;
+    string song;
+
+    cout << "Enter number of songs: ";
+    cin >> n;
+
+    cout << "Enter song names:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> song;
+        addSong(song);
+    }
+
+    playForward();
+    playBackward();
+
+    return 0;
+}

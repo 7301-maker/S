@@ -1,0 +1,97 @@
+5. Implement a circular linked list to simulate a round-robin scheduling algorithm for CPU pro- cesses.
+
+
+#include <iostream>
+using namespace std;
+
+// Circular Linked List Node
+struct Process {
+    int pid;
+    int burstTiAme;
+    Process* next;
+};
+
+Process* head = NULL;
+
+// Insert process at end
+void insertProcess(int pid, int bt) {
+    Process* newNode = new Process();
+    newNode->pid = pid;
+    newNode->burstTime = bt;
+
+    if (head == NULL) {
+        head = newNode;
+        newNode->next = head;
+        return;
+    }
+
+    Process* temp = head;
+    while (temp->next != head)
+        temp = temp->next;
+
+    temp->next = newNode;
+    newNode->next = head;
+}
+
+// Round Robin Scheduling
+void roundRobin(int timeQuantum) {
+    Process* temp = head;
+    int time = 0;
+
+    cout << "\nRound Robin Scheduling Output:\n";
+
+    while (head != NULL) {
+        if (temp->burstTime > 0) {
+            if (temp->burstTime > timeQuantum) {
+                time += timeQuantum;
+                temp->burstTime -= timeQuantum;
+                cout << "Process P" << temp->pid
+                     << " executed for " << timeQuantum << " units\n";
+            } else {
+                time += temp->burstTime;
+                cout << "Process P" << temp->pid
+                     << " executed for " << temp->burstTime
+                     << " units (Completed)\n";
+                temp->burstTime = 0;
+            }
+        }
+
+        temp = temp->next;
+
+        // Check if all processes are completed
+        bool done = true;
+        Process* check = head;
+        do {
+            if (check->burstTime > 0) {
+                done = false;
+                break;
+            }
+            check = check->next;
+        } while (check != head);
+
+        if (done)
+            break;
+    }
+
+    cout << "\nTotal Execution Time: " << time << " units\n";
+}
+
+int main() {
+    int n, bt, tq;
+
+    cout << "Enter number of processes: ";
+    cin >> n;
+
+    for (int i = 1; i <= n; i++) {
+        cout << "Enter burst time for Process P" << i << ": ";
+        cin >> bt;
+        insertProcess(i, bt);
+    }
+
+    cout << "Enter Time Quantum: ";
+    cin >> tq;
+
+    roundRobin(tq);
+
+    return 0;
+}

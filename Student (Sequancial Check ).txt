@@ -1,0 +1,38 @@
+1. A school maintains a list of student names who have registered for an event. Given a student’s name, implement sequential search to check if they have registered.
+
+
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    string students[50];
+    string key;
+    bool found = false;
+
+    cout << "Enter number of registered students: ";
+    cin >> n;
+
+    cout << "Enter student names:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> students[i];
+    }
+
+    cout << "Enter student name to search: ";
+    cin >> key;
+
+    for (int i = 0; i < n; i++) {
+        if (students[i] == key) {
+            cout << "Student is registered at position " << i;
+            found = true;
+            break;
+        }
+    }
+
+    if (!found) {
+        cout << "Student is NOT registered";
+    }
+
+    return 0;
+}

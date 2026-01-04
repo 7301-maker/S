@@ -1,0 +1,93 @@
+5. Implement a priority queue for a hospital emergency room, where patients with higher severity are treated first.
+
+#include <iostream>
+using namespace std;
+
+#define MAX 10
+
+struct Patient {
+    string name;
+    int severity;
+};
+
+Patient pq[MAX];
+int queueSize = 0;  // ← FIXED: renamed from "size" to "queueSize"
+
+// Add patient to priority queue
+void enqueue(string name, int severity) {
+    if (queueSize == MAX) {
+        cout << "Emergency Room is FULL!\n";
+        return;
+    }
+
+    pq[queueSize].name = name;
+    pq[queueSize].severity = severity;
+    queueSize++;
+
+    cout << "Patient " << name << " added with severity " << severity << ".\n";
+}
+
+// Treat patient with highest severity
+void dequeue() {
+    if (queueSize == 0) {
+        cout << "No patients to treat!\n";
+        return;
+    }
+
+    int maxIndex = 0;
+    for (int i = 1; i < queueSize; i++) {
+        if (pq[i].severity > pq[maxIndex].severity) {
+            maxIndex = i;
+        }
+    }
+
+    cout << "Treating Patient: " << pq[maxIndex].name
+         << " (Severity: " << pq[maxIndex].severity << ")\n";
+
+    // Shift remaining patients
+    for (int i = maxIndex; i < queueSize - 1; i++) {
+        pq[i] = pq[i + 1];
+    }
+    queueSize--;
+}
+
+// Display all patients
+void display() {
+    if (queueSize == 0) {
+        cout << "No patients in emergency room.\n";
+        return;
+    }
+
+    cout << "Patients Waiting:\n";
+    for (int i = 0; i < queueSize; i++) {
+        cout << pq[i].name << " - Severity " << pq[i].severity << endl;
+    }
+}
+
+int main() {
+    int choice, severity;
+    string name;
+
+    do {
+        cout << "\n1.Add Patient  2.Treat Patient  3.Display Queue  4.Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            cout << "Enter patient name: ";
+            cin >> name;
+            cout << "Enter severity (1-10): ";
+            cin >> severity;
+            enqueue(name, severity);
+        }
+        else if (choice == 2) {
+            dequeue();
+        }
+        else if (choice == 3) {
+            display();
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}

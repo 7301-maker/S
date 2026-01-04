@@ -1,0 +1,62 @@
+3. A library maintains a large database of books, where each book has a unique ISBN number. Implement hashing to store and search for books efficiently using their ISBN numbers.
+
+#include <iostream>
+using namespace std;
+
+#define SIZE 10
+
+struct Book {
+    int isbn;
+    string title;
+};
+
+Book hashTable[SIZE];
+bool occupied[SIZE] = {false};
+
+int hashFunction(int isbn) {
+    return isbn % SIZE;
+}
+
+void insertBook(int isbn, string title) {
+    int index = hashFunction(isbn);
+
+    while (occupied[index]) {
+        index = (index + 1) % SIZE;
+    }
+
+    hashTable[index].isbn = isbn;
+    hashTable[index].title = title;
+    occupied[index] = true;
+}
+
+void searchBook(int isbn) {
+    int index = hashFunction(isbn);
+    int start = index;
+
+    while (occupied[index]) {
+        if (hashTable[index].isbn == isbn) {
+            cout << "Book Found: " << hashTable[index].title;
+            return;
+        }
+        index = (index + 1) % SIZE;
+        if (index == start)
+            break;
+    }
+
+    cout << "Book NOT Found";
+}
+
+int main() {
+    insertBook(101, "DSA");
+    insertBook(205, "OOP");
+    insertBook(312, "DBMS");
+    insertBook(417, "OS");
+
+    int isbn;
+    cout << "Enter ISBN to search: ";
+    cin >> isbn;
+
+    searchBook(isbn);
+
+    return 0;
+}

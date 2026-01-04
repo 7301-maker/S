@@ -1,0 +1,75 @@
+2. Write a program to store a sequence of train stations in a singly linked list and reverse the order to simulate a return journey.
+
+#include <iostream>
+using namespace std;
+
+struct Station {
+    string name;
+    Station* next;
+};
+
+Station* head = NULL;
+
+// Insert station at end
+void addStation() {
+    Station* newNode = new Station;
+    cout << "Enter station name: ";
+    cin >> newNode->name;
+    newNode->next = NULL;
+
+    if (head == NULL) {
+        head = newNode;
+        return;
+    }
+
+    Station* temp = head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    temp->next = newNode;
+}
+
+// Display stations
+void display() {
+    Station* temp = head;
+    while (temp != NULL) {
+        cout << temp->name << " -> ";
+        temp = temp->next;
+    }
+    cout << "NULL\n";
+}
+
+// Reverse linked list
+void reverseList() {
+    Station* prev = NULL;
+    Station* curr = head;
+    Station* next = NULL;
+
+    while (curr != NULL) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    head = prev;
+}
+
+int main() {
+    int n;
+    cout << "Enter number of stations: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        addStation();
+    }
+
+    cout << "\nJourney Route:\n";
+    display();
+
+    reverseList();
+
+    cout << "\nReturn Journey Route:\n";
+    display();
+
+    return 0;
+}

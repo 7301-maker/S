@@ -1,0 +1,74 @@
+3. Implement a queue to simulate a customer service system where customers join and leave in FIFO order.
+
+#include <iostream>
+using namespace std;
+
+#define MAX 10
+
+int queue[MAX];
+int front = -1, rear = -1;
+
+// Add customer to queue
+void enqueue(int customerID) {
+    if (rear == MAX - 1) {
+        cout << "Queue is FULL!\n";
+        return;
+    }
+
+    if (front == -1)
+        front = 0;
+
+    rear++;
+    queue[rear] = customerID;
+    cout << "Customer " << customerID << " joined the queue.\n";
+}
+
+// Serve customer
+void dequeue() {
+    if (front == -1 || front > rear) {
+        cout << "Queue is EMPTY!\n";
+        return;
+    }
+
+    cout << "Customer " << queue[front] << " served.\n";
+    front++;
+}
+
+// Display queue
+void display() {
+    if (front == -1 || front > rear) {
+        cout << "Queue is EMPTY!\n";
+        return;
+    }
+
+    cout << "Customers in Queue: ";
+    for (int i = front; i <= rear; i++) {
+        cout << queue[i] << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    int choice, id;
+
+    do {
+        cout << "\n1.Add Customer  2.Serve Customer  3.Display Queue  4.Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            cout << "Enter Customer ID: ";
+            cin >> id;
+            enqueue(id);
+        }
+        else if (choice == 2) {
+            dequeue();
+        }
+        else if (choice == 3) {
+            display();
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}

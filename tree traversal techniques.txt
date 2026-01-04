@@ -1,0 +1,62 @@
+2. Implement tree traversal techniques to display hierarchical employee structures in a company.
+
+
+#include <iostream>
+using namespace std;
+
+struct Employee {
+    string name;
+    Employee* left;
+    Employee* right;
+};
+
+Employee* createNode(string name) {
+    Employee* node = new Employee();
+    node->name = name;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+void preorder(Employee* root) {
+    if (root != NULL) {
+        cout << root->name << " ";
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+
+void inorder(Employee* root) {
+    if (root != NULL) {
+        inorder(root->left);
+        cout << root->name << " ";
+        inorder(root->right);
+    }
+}
+
+void postorder(Employee* root) {
+    if (root != NULL) {
+        postorder(root->left);
+        postorder(root->right);
+        cout << root->name << " ";
+    }
+}
+
+int main() {
+    Employee* root = createNode("CEO");
+    root->left = createNode("Manager1");
+    root->right = createNode("Manager2");
+    root->left->left = createNode("Employee1");
+    root->right->right = createNode("Employee2");
+
+    cout << "Preorder: ";
+    preorder(root);
+
+    cout << "\nInorder: ";
+    inorder(root);
+
+    cout << "\nPostorder: ";
+    postorder(root);
+
+    return 0;
+}

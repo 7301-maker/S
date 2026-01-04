@@ -1,0 +1,41 @@
+6. Implement the Selection Sort algorithm to sort product prices in the shop.
+
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    int prices[50];
+
+    cout << "Enter number of products: ";
+    cin >> n;
+
+    cout << "Enter product prices:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> prices[i];
+    }
+
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+
+        for (int j = i + 1; j < n; j++) {
+            if (prices[j] < prices[minIndex]) {
+                minIndex = j;
+            }
+        }
+
+        if (minIndex != i) {
+            int temp = prices[i];
+            prices[i] = prices[minIndex];
+            prices[minIndex] = temp;
+        }
+    }
+
+    cout << "Sorted product prices:\n";
+    for (int i = 0; i < n; i++) {
+        cout << prices[i] << " ";
+    }
+
+    return 0;
+}

@@ -1,0 +1,85 @@
+4. Design a circular queue to efficiently manage a printer queue where print jobs are cyclically processed.
+
+
+#include <iostream>
+using namespace std;
+
+#define MAX 5
+
+int cq[MAX];
+int front = -1, rear = -1;
+
+// Add print job
+void enqueue(int jobID) {
+    if ((rear + 1) % MAX == front) {
+        cout << "Printer Queue is FULL!\n";
+        return;
+    }
+
+    if (front == -1)
+        front = 0;
+
+    rear = (rear + 1) % MAX;
+    cq[rear] = jobID;
+
+    cout << "Print Job " << jobID << " added.\n";
+}
+
+// Process print job
+void dequeue() {
+    if (front == -1) {
+        cout << "Printer Queue is EMPTY!\n";
+        return;
+    }
+
+    cout << "Print Job " << cq[front] << " processed.\n";
+
+    if (front == rear) {
+        front = rear = -1;  // Queue becomes empty
+    } else {
+        front = (front + 1) % MAX;
+    }
+}
+
+// Display printer queue
+void display() {
+    if (front == -1) {
+        cout << "Printer Queue is EMPTY!\n";
+        return;
+    }
+
+    cout << "Current Printer Queue: ";
+    int i = front;
+    while (true) {
+        cout << cq[i] << " ";
+        if (i == rear)
+            break;
+        i = (i + 1) % MAX;
+    }
+    cout << endl;
+}
+
+int main() {
+    int choice, job;
+
+    do {
+        cout << "\n1.Add Print Job  2.Process Job  3.Display Queue  4.Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            cout << "Enter Print Job ID: ";
+            cin >> job;
+            enqueue(job);
+        }
+        else if (choice == 2) {
+            dequeue();
+        }
+        else if (choice == 3) {
+            display();
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}

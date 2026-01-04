@@ -1,0 +1,90 @@
+1. Develop a BST to store and search for student records based on roll numbers.
+
+#include <iostream>
+using namespace std;
+
+// BST Node
+struct Student {
+    int roll;
+    string name;
+    Student* left;
+    Student* right;
+};
+
+// Create new node
+Student* createNode(int roll, string name) {
+    Student* newNode = new Student();
+    newNode->roll = roll;
+    newNode->name = name;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+// Insert into BST
+Student* insert(Student* root, int roll, string name) {
+    if (root == NULL)
+        return createNode(roll, name);
+
+    if (roll < root->roll)
+        root->left = insert(root->left, roll, name);
+    else if (roll > root->roll)
+        root->right = insert(root->right, roll, name);
+
+    return root;
+}
+
+// Search in BST
+Student* search(Student* root, int roll) {
+    if (root == NULL || root->roll == roll)
+        return root;
+
+    if (roll < root->roll)
+        return search(root->left, roll);
+    else
+        return search(root->right, roll);
+}
+
+// Inorder traversal (sorted by roll number)
+void inorder(Student* root) {
+    if (root != NULL) {
+        inorder(root->left);
+        cout << "Roll: " << root->roll << ", Name: " << root->name << endl;
+        inorder(root->right);
+    }
+}
+
+int main() {
+    Student* root = NULL;
+    int choice, roll;
+    string name;
+
+    do {
+        cout << "\n1.Insert  2.Search  3.Display  4.Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            cout << "Enter Roll No: ";
+            cin >> roll;
+            cout << "Enter Name: ";
+            cin >> name;
+            root = insert(root, roll, name);
+        }
+        else if (choice == 2) {
+            cout << "Enter Roll No to search: ";
+            cin >> roll;
+            Student* result = search(root, roll);
+            if (result != NULL)
+                cout << "Student Found: " << result->name << endl;
+            else
+                cout << "Student NOT Found!\n";
+        }
+        else if (choice == 3) {
+            cout << "\nStudent Records (Sorted by Roll No):\n";
+            inorder(root);
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}
